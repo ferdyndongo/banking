@@ -1,4 +1,12 @@
 #!/usr/bin/env python3
+from account_creation import create_account
+from account_login import log_into_account
+
+
+def off():
+    print("Bye")
+    return '0'
+
 
 action = ""
 while action != '0':
