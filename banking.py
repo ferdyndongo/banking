@@ -10,7 +10,7 @@ def off():
 
 action = ""
 while action != '0':
-    print("1. Create an account\n2. Log into account\n0. Exit")
+    print("\n1. Create an account\n2. Log into account\n0. Exit")
     action = input()
     if action == '1':
         create_account()

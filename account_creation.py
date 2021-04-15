@@ -1,7 +1,7 @@
 import random
-can = []
+import sqlite3
+
 iin = '400000'
-accounts = {}
 
 
 def generate_number(n):
@@ -25,16 +25,22 @@ def last_digit(digits):
 
 
 def create_account():
-    global can
-    global accounts
+
+    conn = sqlite3.connect('card.s3db')
+    cur = conn.cursor()
+    cur.execute("DROP TABLE IF EXISTS card;")
+    cur.execute("CREATE TABLE IF NOT EXISTS card (id INTEGER PRIMARY KEY, number TEXT, pin TEXT, balance INTEGER DEFAULT 0);")
     ain = generate_number(9)
-    while ain in can:
+    while ain in [str(pk[0]) for pk in cur.execute("select id from card;")]:
         ain = generate_number(9)
-    can.append(ain)
+
     card_number = iin + ain + last_digit(iin + ain)
     card_pin = generate_number(4)
-    balance = 0
-    accounts[card_number] = {'pin': card_pin, 'balance': balance}
-    print("Your card has been created")
+    card_balance = 0
+    cur.execute("INSERT INTO card(id, number, pin, balance) VALUES(?, ?, ?, ?)", (ain, card_number, card_pin, card_balance))
+    conn.commit()
+    conn.close()
+    print("\nYour card has been created")
     print(f"Your card number:\n{card_number}")
     print(f"Your card PIN:\n{card_pin}")
+
